@@ -100,8 +100,8 @@ public class LoginActivity extends AppCompatActivity {
 
         login.checkLogin(new Login.BeekeeperServiceCallback() {
             @Override
-            public void onResult(String result) {
-                if (result.equals("error")) {
+            public void onResult(boolean result) {
+                if (!result) {
                     Toast.makeText(LoginActivity.this, "Invalid input data", Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -111,11 +111,6 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-//        if(email.equals("shapoval") && password.equals("111111")){
-//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//        }
 
     }
 

@@ -5,12 +5,18 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bignerdranch.android.beerkeeper.Constants;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,56 +38,37 @@ public class Login {
         this.password = password;
     }
 
-    public void checkLogin(@NonNull final BeekeeperServiceCallback callback){
-        String url= Constants.URL+"worker/loginUser";
-        RequestQueue queue = Volley.newRequestQueue(mContext);
-
-       StringRequest postRequest = new StringRequest(method, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Log.d("Response", response);
-                           callback.onResult(response);
-//                        System.out.println("Hello"+response);
-//                        callback.onResult(response);
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        ) {
-           @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
-            }
-@Override
-public Map<String, String> getHeaders() throws AuthFailureError {
-    Map<String,String> params = new HashMap<String, String>();
-    params.put("Content-Type","application/x-www-form-urlencoded");
-    return params;
-}
+    public void checkLogin(@NonNull final BeekeeperServiceCallback callback) {
+        String url = Constants.URL + "worker/loginUser?email=" + email + "&password=" + password;
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                null, new Response.Listener<JSONObject>() {
             @Override
-            protected Map<String, String> getParams()
-            {
-                System.out.println("EmailPass"+email+password);
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("email", email);
-                params.put("password", password);
+            public void onResponse(JSONObject response) {
 
-                return params;
+                try {
+                    callback.onResult(response.getBoolean("wasLogined"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+
+
             }
-        };
-        queue.add(postRequest);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+                callback.onResult(false);
 
-
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonArrayRequest);
     }
+
     public interface BeekeeperServiceCallback {
-        void onResult(String result);
+        void onResult(boolean result);
     }
 
 }

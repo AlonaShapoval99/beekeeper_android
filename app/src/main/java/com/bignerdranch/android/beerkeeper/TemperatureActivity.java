@@ -53,7 +53,7 @@ public class TemperatureActivity extends AppCompatActivity {
     }
 
     public void measureTemperature() {
-        TemperatureDao t = new TemperatureDao(this, Request.Method.GET);
+        TemperatureDao t = new TemperatureDao(this, "9.9.9");
 
         t.getLastTemperature(new TemperatureDao.BeekeeperServiceCallback() {
             @Override

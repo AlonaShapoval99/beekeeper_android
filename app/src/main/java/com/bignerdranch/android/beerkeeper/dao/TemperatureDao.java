@@ -9,7 +9,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bignerdranch.android.beerkeeper.Constants;
 import com.bignerdranch.android.beerkeeper.modules.Temperature;
@@ -23,16 +22,17 @@ import org.json.JSONException;
 
 public class TemperatureDao {
     private Context mContext;
-    private int method;
+    private String coordinates;
 
-    public TemperatureDao(Context mContext, int method) {
+
+    public TemperatureDao(Context mContext, String method) {
 
         this.mContext = mContext;
-        this.method = method;
+        this.coordinates = method;
     }
 
     public void getLastTemperature(@NonNull final BeekeeperServiceCallback callback) {
-        String url =Constants.URL+"beehive/temperature/last";
+        String url =Constants.URL+"beehive/currentTemp?coordinates="+coordinates;
 
 
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
@@ -40,10 +40,7 @@ public class TemperatureDao {
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-//                for (int i = 0; i < response.length(); i++) {
                     try {
-//                        JSONObject jsonObject = response.getJSONObject(i);
-
                         Temperature temperature=new Temperature();
                         temperature.setId(response.getLong("id"));
                         temperature.setDate(response.getString("measureDateTemperature"));
@@ -53,7 +50,6 @@ public class TemperatureDao {
                         e.printStackTrace();
 
                     }
-//                }
 
             }
         }, new Response.ErrorListener() {
