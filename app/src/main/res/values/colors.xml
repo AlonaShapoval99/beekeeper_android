@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF4900</color>
+    <color name="colorPrimaryDark">#f4bd8a</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorLightBlue">#ffb62a</color>
+    <color name="blue">#009ab0</color>
+    <color name="green">#398500</color>
+    <color name="color_for_log_btn">#f4bd8a</color>
+    <color name="grey_">#595959</color>
+    <color name="black">#000000</color>
+    <color name="color_for_fon">#e6e6e6</color>
+
+</resources>

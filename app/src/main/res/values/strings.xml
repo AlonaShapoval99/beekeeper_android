@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name" translatable="false">Beekeeper</string>
+    <!-- Strings related to MainActivity -->
+    <string name="temperature" translatable="false">Measure temperature</string>
+    <string name="humidity">Measure humidity</string>
+    <string name="oxygen">Measure oxygen</string>
+    <string name="beehive">Beehive</string>
+    <!--<string name="title_activity_login">Sign in</string>-->
+
+    <!-- Strings related to TemperatureActivity -->
+    <string name="measure">Measure</string>
+
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_short">Log in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+
+    <!-- Strings related to SpawningActivity -->
+    <string name="data_temperature">Average temperature \nin the beehive:</string>
+    <string name="data_humidity">Average humidity \nin the beehive:</string>
+    <string name="data_oxygen">Average oxygen \nin the beehive:</string>
+    <string name="data_amount">Bees amount:</string>
+    <string name="can">Swarming is possible</string>
+    <string name="cannot">Swarming is not possible</string>
+
+    <!-- Strings related to Menu -->
+    <string name="change_locale">Change Locale</string>
+    <string name="log_out">Log out</string>
+</resources>

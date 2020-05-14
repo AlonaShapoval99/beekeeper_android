@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Beekeeper</string>
+    <!-- Strings related to MainActivity -->
+    <string name="temperature">Виміряти температуру</string>
+    <string name="humidity">Виміряти вологість</string>
+    <string name="oxygen">Виміряти зівень кисню</string>
+    <string name="beehive">Вулик</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to TemperatureActivity -->
+    <string name="measure" translatable="false">Виміряти</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="action_sign_in_short">Увійти</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+
+    <!-- Strings related to SpawningActivity -->
+    <string name="data_temperature">Середня температура \nу вулику:</string>
+    <string name="data_humidity">Середня вологість \nу вулику:</string>
+    <string name="data_oxygen">Середній рівень кисню \nу вулику:</string>
+    <string name="data_amount">Кількість бджіл:</string>
+    <string name="can">Роїння можливе</string>
+    <string name="cannot">Роїння не можливе</string>
+
+    <!-- Strings related to Menu -->
+    <string name="change_locale">Змінити мову</string>
+    <string name="log_out">Вихід</string>
+</resources>

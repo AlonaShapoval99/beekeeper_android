@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bignerdranch.android.beerkeeper.OxygenActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#e6e6e6"
+        android:orientation="vertical"
+        >
+
+        <Spinner
+            android:id="@+id/choose_beehive"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:src="@drawable/oxygen" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="-40dp"
+            android:theme="@style/CircularProgress"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/degree_oxygen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/measure"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+
+            android:background="@drawable/border_for_log_in"
+            android:text="@string/measure"
+            android:textColor="@color/grey_"
+            android:textSize="17sp"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
