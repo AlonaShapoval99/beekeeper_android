@@ -23,44 +23,34 @@ import org.json.JSONObject;
 
 public class OxygenDao {
     private Context mContext;
-    private int method;
+    private String coordinates;
 
-    public OxygenDao(Context mContext, int method) {
+    public OxygenDao(Context mContext, String coordinates) {
 
         this.mContext = mContext;
-        this.method = method;
+        this.coordinates = coordinates;
     }
 
     public void getLastOxygen(@NonNull final OxygenDao.BeekeeperServiceCallback callback) {
-        String url = Constants.URL+"beehive/oxygen/last";
-
-
+        String url = Constants.URL + "beehive/currentOxygen?coordinates=" + coordinates;
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
                 url,
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-//                for (int i = 0; i < response.length(); i++) {
                 try {
-//                        JSONObject jsonObject = response.getJSONObject(i);
-
-                    Oxygen oxygen=new Oxygen();
-                    oxygen.setId(response.getLong("id"));
-                    oxygen.setDate(response.getString("measureDateOxygen"));
-                    oxygen.setValue(response.getInt("oxygenValue"));
-                    callback.onResult(oxygen.getValue()+"");
+                    callback.onResult(response.getDouble("value") + "");
                 } catch (JSONException e) {
                     e.printStackTrace();
 
                 }
-//                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley", error.toString());
-                callback.onResult("Error");
+                callback.onResult(Constants.ERROR);
 
             }
         });

@@ -23,16 +23,16 @@ import org.json.JSONObject;
 
 public class HumidityDao {
     private Context mContext;
-    private int method;
+    private String coordinates;
 
-    public HumidityDao(Context mContext, int method) {
+    public HumidityDao(Context mContext, String coordinates) {
 
         this.mContext = mContext;
-        this.method = method;
+        this.coordinates = coordinates;
     }
 
     public void getLastHumidity(@NonNull final HumidityDao.BeekeeperServiceCallback callback) {
-        String url = Constants.URL+"beehive/humidity/last";
+        String url = Constants.URL + "beehive/currentHumidity?coordinates=" + coordinates;
 
 
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
@@ -40,27 +40,20 @@ public class HumidityDao {
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-//                for (int i = 0; i < response.length(); i++) {
                 try {
-//                        JSONObject jsonObject = response.getJSONObject(i);
-
-                    Humidity humidity = new Humidity();
-                    humidity.setId(response.getLong("id"));
-                    humidity.setDate(response.getString("measureDateAmount"));
-                    humidity.setValue(response.getInt("humidityValue"));
-                    callback.onResult(humidity.getValue()+"");
+                    callback.onResult(response.getDouble("value") + "");
                 } catch (JSONException e) {
                     e.printStackTrace();
 
                 }
-//                }
+
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley", error.toString());
-                callback.onResult("Error");
+                callback.onResult(Constants.ERROR);
 
             }
         });

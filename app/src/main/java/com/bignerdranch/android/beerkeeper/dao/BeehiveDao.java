@@ -22,6 +22,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by User on 019 19.05.19.
  */
@@ -36,52 +40,45 @@ public class BeehiveDao {
         this.method = method;
     }
 
-    public void getAllBeehive(@NonNull final TemperatureDao.BeekeeperServiceCallback callback) {
-        String url = Constants.URL+"beehive/temperature/last";
-
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+    public void getCoordinates(@NonNull final BeekeeperServiceCallback callback) {
+        String url = Constants.URL + "beehive/beehiveCoordinates";
+        JsonArrayRequest  jsonArrayRequest = new JsonArrayRequest (Request.Method.GET,
+                url,
+                null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(i);
+                try{
+                    List<String> coordinates = new ArrayList<>();
+                    // Loop through the array elements
+                    for(int i=0;i<response.length();i++){
+                        // Get current json object
 
-                        Beehive beehive = new Beehive();
-                        beehive.setAmount(new Amount(jsonObject.getLong("id"),
-                                jsonObject.getString("measureDateAmount"),
-                                jsonObject.getInt("amountOfBees")));
-                        beehive.setHumidity(new Humidity(jsonObject.getLong("id"),
-                                jsonObject.getString("measureDateAmount"),
-                                jsonObject.getInt("humidityValue")));
-                        beehive.setId(jsonObject.getLong("id"));
-                        beehive.setOxygen(new Oxygen(jsonObject.getLong("id"),
-                                jsonObject.getString("measureDateOxygen"),
-                                jsonObject.getInt("oxygenValue")));
-                        beehive.setTemperature(new Temperature(jsonObject.getLong("id"),
-                                jsonObject.getString("measureDateTemperature"),
-                                jsonObject.getInt("temperatureValue")));
+                       coordinates.add(response.getJSONObject(i).getString("coordinates"));
 
-//                        movieList.add(movie);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-//                        progressDialog.dismiss();
                     }
+                    callback.onResult(coordinates);
+                }catch (JSONException e){
+                    e.printStackTrace();
                 }
-//                adapter.notifyDataSetChanged();
-//                progressDialog.dismiss();
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley", error.toString());
-//                progressDialog.dismiss();
+                callback.onResult(Arrays.asList(Constants.ERROR));
+
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         requestQueue.add(jsonArrayRequest);
+        //return coordinates;
     }
+
+    public interface BeekeeperServiceCallback {
+        void onResult(List<String> result);
     }
+}
 
 
 

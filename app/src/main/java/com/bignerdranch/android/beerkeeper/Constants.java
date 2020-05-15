@@ -5,9 +5,10 @@ package com.bignerdranch.android.beerkeeper;
  */
 
 public class Constants {
-   public static int MAX_POSSIBLE_TEMPERATURE = 18;
-   public  static int MIN_POSSIBLE_TEMPERATURE = 14;
-   public  static int MAX_POSSIBLE_WATER_CONDITION = 80;
-   public  static int MIN_FISH_AGE = 2;
-   public final static String URL="https://97f08369.ngrok.io/";
+    public final static String URL = "https://46448733.ngrok.io/";
+    public final static String SERVICES_ERROR = "Services are not available now";
+    public final static String NO_DATA_FOR_DATE = "There is no data for current date";
+    public final static String NAN = "NaN";
+    public final static String ERROR = "Error";
+
 }

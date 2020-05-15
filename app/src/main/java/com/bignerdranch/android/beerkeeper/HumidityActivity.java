@@ -11,10 +11,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.bignerdranch.android.beerkeeper.dao.BeehiveDao;
 import com.bignerdranch.android.beerkeeper.dao.HumidityDao;
 import com.bignerdranch.android.beerkeeper.dao.TemperatureDao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +40,6 @@ public class HumidityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_humidity);
         ButterKnife.bind(this);
         beehives.add("Beehives");
-        getPools();
 
         mButtonHumidityMeasuring.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,41 +48,44 @@ public class HumidityActivity extends AppCompatActivity {
 
             }
         });
+        getBeehiveCoordinates();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, beehives);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerChooseBeehive.setAdapter(adapter);
 
     }
 
-    public void measureHumidity() {
- HumidityDao t = new HumidityDao(this, Request.Method.GET);
+    public void getBeehiveCoordinates() {
+        BeehiveDao beehiveDao = new BeehiveDao(this, Request.Method.GET);
 
-        t.getLastHumidity(new HumidityDao.BeekeeperServiceCallback() {
+        beehiveDao.getCoordinates(new BeehiveDao.BeekeeperServiceCallback() {
             @Override
-            public void onResult(String answer) {
-                if (!answer.equals("Error")) {
-                    mTextViewDegreeHumidity.setText(formatValue(answer));
-                } else {
-                    mTextViewDegreeHumidity.setText("80 %");
+            public void onResult(List<String> answer) {
+                for (String coordinate : answer) {
+                    beehives.add(coordinate);
                 }
+
             }
         });
 
     }
 
-    public void getPools() {
-//        Pool t = new Pool(this, Request.Method.GET);
-//
-//        t.getPools(new Pool.BeekeeperServiceCallback() {
-//            @Override
-//            public void onResult(String answer) {
-//                if (!answer.equals("Error")) {
-//                    beehives.add("Pools #" + answer);
-//                } else {
-//                    // mTextViewDegreeHumidity.setText("Error");
-//                }
-//            }
-//        });
+    public void measureHumidity() {
+        HumidityDao t = new HumidityDao(this, "12.12.12");
+
+        t.getLastHumidity(new HumidityDao.BeekeeperServiceCallback() {
+            @Override
+            public void onResult(String answer) {
+                if (!answer.equals(Constants.ERROR) && !answer.equals(Constants.NAN)) {
+                    mTextViewDegreeHumidity.setText(formatValue(answer));
+                } else if (answer.equals(Constants.NAN)) {
+                    mTextViewDegreeHumidity.setText(Constants.NO_DATA_FOR_DATE);
+                } else {
+                    mTextViewDegreeHumidity.setText(Constants.SERVICES_ERROR);
+                }
+            }
+        });
+
     }
 
     @Override

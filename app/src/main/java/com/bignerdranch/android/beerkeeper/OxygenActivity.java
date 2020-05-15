@@ -11,10 +11,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.bignerdranch.android.beerkeeper.dao.BeehiveDao;
 import com.bignerdranch.android.beerkeeper.dao.OxygenDao;
 import com.bignerdranch.android.beerkeeper.dao.TemperatureDao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +40,6 @@ public class OxygenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_oxygen);
         ButterKnife.bind(this);
         beehives.add("Beehives");
-        getPools();
 
         mButtonOxygenMeasuring.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +48,7 @@ public class OxygenActivity extends AppCompatActivity {
 
             }
         });
+        getBeehiveCoordinates();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, beehives);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerChooseBeehive.setAdapter(adapter);
@@ -54,34 +56,36 @@ public class OxygenActivity extends AppCompatActivity {
     }
 
     public void measureOxygen() {
-        OxygenDao t = new OxygenDao(this, Request.Method.GET);
+        OxygenDao t = new OxygenDao(this, "12.12.12");
 
         t.getLastOxygen(new OxygenDao.BeekeeperServiceCallback() {
             @Override
             public void onResult(String answer) {
-                if (!answer.equals("Error")) {
+                if (!answer.equals(Constants.ERROR) && !answer.equals(Constants.NAN)) {
                     mTextViewDegreeOxygen.setText(formatValue(answer));
+                } else if (answer.equals(Constants.NAN)) {
+                    mTextViewDegreeOxygen.setText(Constants.NO_DATA_FOR_DATE);
                 } else {
-                    mTextViewDegreeOxygen.setText("90 %");
+                    mTextViewDegreeOxygen.setText(Constants.SERVICES_ERROR);
                 }
             }
         });
 
     }
 
-    public void getPools() {
-//        Pool t = new Pool(this, Request.Method.GET);
-//
-//        t.getPools(new Pool.BeekeeperServiceCallback() {
-//            @Override
-//            public void onResult(String answer) {
-//                if (!answer.equals("Error")) {
-//                    beehives.add("Pools #" + answer);
-//                } else {
-//                    // mTextViewDegreeOxygen.setText("Error");
-//                }
-//            }
-//        });
+    public void getBeehiveCoordinates() {
+        BeehiveDao beehiveDao = new BeehiveDao(this, Request.Method.GET);
+
+        beehiveDao.getCoordinates(new BeehiveDao.BeekeeperServiceCallback() {
+            @Override
+            public void onResult(List<String> answer) {
+                for (String coordinate : answer) {
+                    beehives.add(coordinate);
+                }
+
+            }
+        });
+
     }
 
     @Override

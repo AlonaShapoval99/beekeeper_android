@@ -11,9 +11,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.bignerdranch.android.beerkeeper.dao.BeehiveDao;
 import com.bignerdranch.android.beerkeeper.dao.TemperatureDao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,18 +39,33 @@ public class TemperatureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_temperature);
         ButterKnife.bind(this);
         beehives.add("Beehives");
-       // getPools();
 
         mButtonTemperatureMeasuring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               measureTemperature();
+                measureTemperature();
 
             }
         });
+        getBeehiveCoordinates();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, beehives);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerChooseBeehive.setAdapter(adapter);
+
+    }
+
+    public void getBeehiveCoordinates() {
+        BeehiveDao beehiveDao = new BeehiveDao(this, Request.Method.GET);
+
+        beehiveDao.getCoordinates(new BeehiveDao.BeekeeperServiceCallback() {
+            @Override
+            public void onResult(List<String> answer) {
+                for (String coordinate : answer) {
+                    beehives.add(coordinate);
+                }
+
+            }
+        });
 
     }
 
@@ -58,31 +75,17 @@ public class TemperatureActivity extends AppCompatActivity {
         t.getLastTemperature(new TemperatureDao.BeekeeperServiceCallback() {
             @Override
             public void onResult(String answer) {
-                if (!answer.equals("Error")) {
+                if (!answer.equals(Constants.ERROR) && !answer.equals(Constants.NAN)) {
                     mTextViewDegreeTemperature.setText(formatValue(answer));
+                } else if (answer.equals(Constants.NAN)) {
+                    mTextViewDegreeTemperature.setText(Constants.NO_DATA_FOR_DATE);
                 } else {
-                    mTextViewDegreeTemperature.setText("24 C");
+                    mTextViewDegreeTemperature.setText(Constants.SERVICES_ERROR);
                 }
             }
         });
-       // t.getLastTemperature();
 
     }
-//
-//    public void getPools() {
-//        Pool t = new Pool(this, Request.Method.GET);
-//
-//        t.getPools(new Pool.BeekeeperServiceCallback() {
-//            @Override
-//            public void onResult(String answer) {
-//                if (!answer.equals("Error")) {
-//                    beehives.add("Pools #" + answer);
-//                } else {
-//                    // mTextViewDegreeTemperature.setText("Error");
-//                }
-//            }
-//        });
-//    }
 
     @Override
     public void onBackPressed() {

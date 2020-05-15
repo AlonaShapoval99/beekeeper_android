@@ -32,7 +32,7 @@ public class TemperatureDao {
     }
 
     public void getLastTemperature(@NonNull final BeekeeperServiceCallback callback) {
-        String url =Constants.URL+"beehive/currentTemp?coordinates="+coordinates;
+        String url = Constants.URL + "beehive/currentTemp?coordinates=" + coordinates;
 
 
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
@@ -40,23 +40,19 @@ public class TemperatureDao {
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                    try {
-                        Temperature temperature=new Temperature();
-                        temperature.setId(response.getLong("id"));
-                        temperature.setDate(response.getString("measureDateTemperature"));
-                        temperature.setValue(response.getInt("temperatureValue"));
-                        callback.onResult(temperature.getValue()+"");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                try {
+                    callback.onResult(response.getDouble("value") + "");
+                } catch (JSONException e) {
+                    e.printStackTrace();
 
-                    }
+                }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Volley", error.toString());
-                callback.onResult("Error");
+                callback.onResult(Constants.ERROR);
 
             }
         });
