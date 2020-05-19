@@ -32,4 +32,6 @@
     <!-- Strings related to Menu -->
     <string name="change_locale">Change Locale</string>
     <string name="log_out">Log out</string>
+
+    <string name="beehive_coordinates">Beehive coordinates</string>
 </resources>

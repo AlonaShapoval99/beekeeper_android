@@ -3,9 +3,12 @@ package com.bignerdranch.android.beerkeeper;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.bignerdranch.android.beerkeeper.dao.BeehiveDao;
@@ -32,15 +35,16 @@ public class BeehiveActivity extends AppCompatActivity {
     @BindView(R.id.swarming)
     TextView mTextViewSwarming;
     @BindView(R.id.choose_beehive)
-    Spinner mSpinnerChoosePool;
+    Spinner mSpinnerChooseBeehive;
     ArrayList<String> beehives = new ArrayList<>();
+    private String coordinates = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_beehive);
         ButterKnife.bind(this);
-        beehives.add("Beehives");
+        beehives.add("?.?.?");
 
         getAverageTemperature();
         getAverageHumidity();
@@ -50,11 +54,21 @@ public class BeehiveActivity extends AppCompatActivity {
         getBeehiveCoordinates();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, beehives);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinnerChoosePool.setAdapter(adapter);
+        mSpinnerChooseBeehive.setAdapter(adapter);
+        mSpinnerChooseBeehive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                coordinates = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     public void getOxygen() {
-        OxygenDao t = new OxygenDao(this, "12.12.12");
+        OxygenDao t = new OxygenDao(this, coordinates);
 
         t.getLastOxygen(new OxygenDao.BeekeeperServiceCallback() {
             @Override

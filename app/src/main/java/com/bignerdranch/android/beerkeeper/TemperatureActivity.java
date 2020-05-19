@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.bignerdranch.android.beerkeeper.dao.BeehiveDao;
@@ -31,14 +33,14 @@ public class TemperatureActivity extends AppCompatActivity {
     @BindView(R.id.choose_beehive)
     Spinner mSpinnerChooseBeehive;
     ArrayList<String> beehives = new ArrayList<>();
-
+    private String coordinates = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperature);
         ButterKnife.bind(this);
-        beehives.add("Beehives");
+        beehives.add("?.?.?");
 
         mButtonTemperatureMeasuring.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +53,17 @@ public class TemperatureActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, beehives);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerChooseBeehive.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        mSpinnerChooseBeehive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                coordinates = (String) parent.getItemAtPosition(position);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     public void getBeehiveCoordinates() {
@@ -70,7 +82,7 @@ public class TemperatureActivity extends AppCompatActivity {
     }
 
     public void measureTemperature() {
-        TemperatureDao t = new TemperatureDao(this, "9.9.9");
+        TemperatureDao t = new TemperatureDao(this, coordinates);
 
         t.getLastTemperature(new TemperatureDao.BeekeeperServiceCallback() {
             @Override

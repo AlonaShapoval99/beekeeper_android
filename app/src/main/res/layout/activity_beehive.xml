@@ -5,125 +5,144 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bignerdranch.android.beerkeeper.BeehiveActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:id="@+id/choose_beehive"
 
-            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/beehive_coordinates"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <Spinner
+                android:id="@+id/choose_beehive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                />
+        </LinearLayout>
+
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:orientation="vertical">
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#e6ffff">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/data_temperature"
-                    android:textSize="20sp"
-
                     android:textColor="@color/black"
-                    />
+
+                    android:textSize="20sp" />
+
                 <TextView
+                    android:id="@+id/date_temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/date_temperature"
-                    android:textSize="20sp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/black"
+                    android:textSize="20sp"
 
                     />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/data_humidity"
-                    android:textSize="20sp"
-
                     android:textColor="@color/black"
-                    />
+
+                    android:textSize="20sp" />
+
                 <TextView
+                    android:id="@+id/date_humidity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/date_humidity"
-                    android:textSize="20sp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/black"
-                    />
+                    android:textSize="20sp" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/data_oxygen"
-                    android:textSize="20sp"
-
                     android:textColor="@color/black"
-                    />
+
+                    android:textSize="20sp" />
+
                 <TextView
+                    android:id="@+id/date_oxygen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/date_oxygen"
-                    android:textSize="20sp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/black"
-                    />
+                    android:textSize="20sp" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#e6ffff">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:text="@string/data_amount"
-                    android:textSize="20sp"
                     android:layout_gravity="center_vertical"
+                    android:text="@string/data_amount"
                     android:textColor="@color/black"
-                    />
+                    android:textSize="20sp" />
+
                 <TextView
+                    android:id="@+id/date_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/date_amount"
-                    android:textSize="20sp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/black"
+                    android:textSize="20sp"
 
                     />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/swarming"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
-                    android:id="@+id/swarming"
-                    android:textSize="20sp"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/black"
-                    />
+                    android:textSize="20sp" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

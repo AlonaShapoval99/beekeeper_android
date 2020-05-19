@@ -5,9 +5,9 @@ package com.bignerdranch.android.beerkeeper;
  */
 
 public class Constants {
-    public final static String URL = "https://46448733.ngrok.io/";
+    public final static String URL = "https://ac5ff0f4.ngrok.io/";
     public final static String SERVICES_ERROR = "Services are not available now";
-    public final static String NO_DATA_FOR_DATE = "There is no data for current date";
+    public final static String NO_DATA_FOR_DATE = "There is no data for current date or for chosen coordinates";
     public final static String NAN = "NaN";
     public final static String ERROR = "Error";
 

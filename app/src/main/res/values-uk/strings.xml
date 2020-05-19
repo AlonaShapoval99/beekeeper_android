@@ -32,4 +32,6 @@
     <!-- Strings related to Menu -->
     <string name="change_locale">Змінити мову</string>
     <string name="log_out">Вихід</string>
+
+    <string name="beehive_coordinates">Координати вулика</string>
 </resources>

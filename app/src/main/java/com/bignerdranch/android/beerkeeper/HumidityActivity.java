@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -32,14 +33,14 @@ public class HumidityActivity extends AppCompatActivity {
     @BindView(R.id.choose_beehive)
     Spinner mSpinnerChooseBeehive;
     ArrayList<String> beehives = new ArrayList<>();
-
+    private String coordinates = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_humidity);
         ButterKnife.bind(this);
-        beehives.add("Beehives");
+        beehives.add("?.?.?");
 
         mButtonHumidityMeasuring.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +53,16 @@ public class HumidityActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, beehives);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinnerChooseBeehive.setAdapter(adapter);
+        mSpinnerChooseBeehive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                coordinates = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
     }
 
@@ -71,7 +82,7 @@ public class HumidityActivity extends AppCompatActivity {
     }
 
     public void measureHumidity() {
-        HumidityDao t = new HumidityDao(this, "12.12.12");
+        HumidityDao t = new HumidityDao(this, coordinates);
 
         t.getLastHumidity(new HumidityDao.BeekeeperServiceCallback() {
             @Override
