@@ -32,12 +32,13 @@ import java.util.List;
 
 public class BeehiveDao {
     private Context mContext;
-    private int method;
+    private String coordinates;
 
-    public BeehiveDao(Context mContext, int method) {
+
+    public BeehiveDao(Context mContext, String coordinates) {
 
         this.mContext = mContext;
-        this.method = method;
+        this.coordinates = coordinates;
     }
 
     public void getCoordinates(@NonNull final BeekeeperServiceCallback callback) {
@@ -74,9 +75,47 @@ public class BeehiveDao {
         requestQueue.add(jsonArrayRequest);
         //return coordinates;
     }
+    public void getBeehiveByCoordinates(@NonNull final BeekeeperServiceCallback callback) {
+        String url = Constants.URL + "beehive/findBeehiveByCoordinates?coordinates=" + coordinates;
+
+
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    Beehive beehive = new Beehive();
+                    beehive.setAmount(response.getJSONObject("amountValue").getDouble("value"));
+                    beehive.setTemperature(response.getJSONObject("temperatureValue").getDouble("value"));
+                    beehive.setHumidity(response.getJSONObject("humidityValue").getDouble("value"));
+                    beehive.setOxygen(response.getJSONObject("oxygenValue").getDouble("value"));
+                    beehive.setCoordinates(response.getString("coordinates"));
+                    beehive.setAmountOfFrames(response.getInt("amountOfFrames"));
+                    callback.onResult(beehive);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+                callback.onResult(Constants.ERROR);
+
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonArrayRequest);
+    }
+
 
     public interface BeekeeperServiceCallback {
         void onResult(List<String> result);
+        void onResult(String result);
+        void onResult(Beehive result);
     }
 }
 

@@ -6,7 +6,8 @@
     <string name="humidity">Виміряти вологість</string>
     <string name="oxygen">Виміряти зівень кисню</string>
     <string name="beehive">Вулик</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Увійти</string>
+    <string name="amount_frames">Кількість рамок</string>
 
     <!-- Strings related to TemperatureActivity -->
     <string name="measure" translatable="false">Виміряти</string>

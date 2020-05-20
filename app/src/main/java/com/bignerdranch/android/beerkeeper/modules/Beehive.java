@@ -8,65 +8,77 @@ import java.util.Date;
 
 public class Beehive {
 
-    private Long id;
+    private String coordinates;
 
-    private Temperature temperature;
+    private Double temperature;
 
-    private Oxygen oxygen;
+    private Double oxygen;
 
 
-    private Amount amount;
+    private Double amount;
 
-    private Humidity humidity;
+    private Double humidity;
 
-    public Beehive(Long id, Temperature temperature, Oxygen oxygen, Amount amount, Humidity humidity) {
-        this.id = id;
+    private Integer amountOfFrames;
+
+
+    public Beehive(String coordinates, Double temperature, Double oxygen, Double amount, Double humidity, Integer amountOfFrames) {
+        this.coordinates = coordinates;
         this.temperature = temperature;
         this.oxygen = oxygen;
         this.amount = amount;
         this.humidity = humidity;
+        this.amountOfFrames = amountOfFrames;
     }
 
     public Beehive() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Temperature getTemperature() {
+    public Double getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(Temperature temperature) {
+    public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
 
-    public Oxygen getOxygen() {
+    public Double getOxygen() {
         return oxygen;
     }
 
-    public void setOxygen(Oxygen oxygen) {
+    public void setOxygen(Double oxygen) {
         this.oxygen = oxygen;
     }
 
-    public Amount getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Amount amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public Humidity getHumidity() {
+    public Double getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(Humidity humidity) {
+    public void setHumidity(Double humidity) {
         this.humidity = humidity;
+    }
+
+    public String getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public Integer getAmountOfFrames() {
+        return amountOfFrames;
+    }
+
+    public void setAmountOfFrames(Integer amountOfFrames) {
+        this.amountOfFrames = amountOfFrames;
     }
 }

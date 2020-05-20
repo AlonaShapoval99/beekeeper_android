@@ -5,6 +5,8 @@
     <string name="humidity">Measure humidity</string>
     <string name="oxygen">Measure oxygen</string>
     <string name="beehive">Beehive</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="amount_frames">Amount of frames</string>
     <!--<string name="title_activity_login">Sign in</string>-->
 
     <!-- Strings related to TemperatureActivity -->

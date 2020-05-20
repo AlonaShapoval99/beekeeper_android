@@ -15,6 +15,7 @@ import com.android.volley.Request;
 import com.bignerdranch.android.beerkeeper.dao.BeehiveDao;
 import com.bignerdranch.android.beerkeeper.dao.HumidityDao;
 import com.bignerdranch.android.beerkeeper.dao.TemperatureDao;
+import com.bignerdranch.android.beerkeeper.modules.Beehive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,7 @@ public class HumidityActivity extends AppCompatActivity {
     }
 
     public void getBeehiveCoordinates() {
-        BeehiveDao beehiveDao = new BeehiveDao(this, Request.Method.GET);
+        BeehiveDao beehiveDao = new BeehiveDao(this, "Request.Method.GET");
 
         beehiveDao.getCoordinates(new BeehiveDao.BeekeeperServiceCallback() {
             @Override
@@ -75,6 +76,16 @@ public class HumidityActivity extends AppCompatActivity {
                 for (String coordinate : answer) {
                     beehives.add(coordinate);
                 }
+
+            }
+
+            @Override
+            public void onResult(String result) {
+
+            }
+
+            @Override
+            public void onResult(Beehive result) {
 
             }
         });
