@@ -36,6 +36,8 @@ public class BeehiveActivity extends AppCompatActivity {
     TextView mTextViewAmount;
     @BindView(R.id.swarming)
     TextView mTextViewSwarming;
+    @BindView(R.id.weather_prediction)
+    TextView mTextViewWeatherPrediction;
     @BindView(R.id.choose_beehive)
     Spinner mSpinnerChooseBeehive;
     @BindView(R.id.amount_of_frames)
@@ -59,6 +61,8 @@ public class BeehiveActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 coordinates = (String) parent.getItemAtPosition(position);
                 getBeehiveByCoordinates(coordinates);
+                getSwarming(coordinates);
+                getWeatherPrediction();
             }
 
             @Override
@@ -118,6 +122,47 @@ public class BeehiveActivity extends AppCompatActivity {
 
     }
 
+    private void getSwarming(String coordinates) {
+        BeehiveDao beehiveDao = new BeehiveDao(this, coordinates);
+
+        beehiveDao.getSwarming(new BeehiveDao.BeekeeperServiceCallback() {
+            @Override
+            public void onResult(List<String> answer) {
+            }
+
+            @Override
+            public void onResult(String result) {
+                mTextViewSwarming.setText(result);
+            }
+
+            @Override
+            public void onResult(Beehive result) {
+
+            }
+        });
+
+    }
+
+    private void getWeatherPrediction() {
+        BeehiveDao beehiveDao = new BeehiveDao(this);
+
+        beehiveDao.getWeatherPrediction(new BeehiveDao.BeekeeperServiceCallback() {
+            @Override
+            public void onResult(List<String> answer) {
+            }
+
+            @Override
+            public void onResult(String result) {
+                mTextViewWeatherPrediction.setText(result);
+            }
+
+            @Override
+            public void onResult(Beehive result) {
+
+            }
+        });
+
+    }
 
     @Override
     public void onBackPressed() {

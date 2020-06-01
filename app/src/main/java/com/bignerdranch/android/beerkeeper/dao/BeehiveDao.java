@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,12 +34,20 @@ import java.util.List;
 public class BeehiveDao {
     private Context mContext;
     private String coordinates;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
 
     public BeehiveDao(Context mContext, String coordinates) {
 
         this.mContext = mContext;
         this.coordinates = coordinates;
+    }
+    public BeehiveDao(Context mContext) {
+
+        this.mContext = mContext;
+        this.startDate = LocalDate.now().minusDays(7);
+        this.endDate = LocalDate.now();
     }
 
     public void getCoordinates(@NonNull final BeekeeperServiceCallback callback) {
@@ -54,7 +63,7 @@ public class BeehiveDao {
                     for(int i=0;i<response.length();i++){
                         // Get current json object
 
-                       coordinates.add(response.getJSONObject(i).getString("coordinates"));
+                        coordinates.add(response.getJSONObject(i).getString("coordinates"));
 
                     }
                     callback.onResult(coordinates);
@@ -93,6 +102,61 @@ public class BeehiveDao {
                     beehive.setCoordinates(response.getString("coordinates"));
                     beehive.setAmountOfFrames(response.getInt("amountOfFrames"));
                     callback.onResult(beehive);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+                callback.onResult(Constants.ERROR);
+
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonArrayRequest);
+    }
+    public void getSwarming(@NonNull final BeekeeperServiceCallback callback) {
+        String url = Constants.URL + "beehive/swarmingPossible?coordinates="+coordinates;
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String resultMessage = response.getString("errorMessage");
+                    callback.onResult(resultMessage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+                callback.onResult(Constants.ERROR);
+
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonArrayRequest);
+    }
+    public void getWeatherPrediction(@NonNull final BeekeeperServiceCallback callback) {
+        String url = Constants.URL + "beehive/weatherPrediction?startDate="+startDate+
+                "&endDate="+endDate;
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String resultMessage = response.getString("errorMessage");
+                    callback.onResult(resultMessage);
                 } catch (JSONException e) {
                     e.printStackTrace();
 
