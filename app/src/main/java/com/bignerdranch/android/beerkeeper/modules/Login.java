@@ -30,12 +30,20 @@ public class Login {
     private int method;
     private String email;
     private String password;
+    private Long userId;
+    private int hours;
 
     public Login(Context mContext, int method, String email, String password) {
         this.mContext = mContext;
         this.method = method;
         this.email = email;
         this.password = password;
+    }
+
+    public Login(Context mContext, Long userId, long hours) {
+        this.mContext = mContext;
+        this.userId = userId;
+        this.hours = (int) hours;
     }
 
     public void checkLogin(@NonNull final BeekeeperServiceCallback callback) {
@@ -47,7 +55,8 @@ public class Login {
             public void onResponse(JSONObject response) {
 
                 try {
-                    callback.onResult(response.getBoolean("wasLogined"));
+                    callback.onResult(new User(response.getLong("id"),
+                            response.getBoolean("wasLogined")));
                 } catch (JSONException e) {
                     e.printStackTrace();
 
@@ -67,8 +76,40 @@ public class Login {
         requestQueue.add(jsonArrayRequest);
     }
 
+    public void logout(@NonNull final BeekeeperServiceCallback callback) {
+        String url = Constants.URL + "worker/logout?workingHours=" + hours + "&workerId=" + userId;
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET,
+                url,
+                null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+//
+//                try {
+////                    callback.onResult(new User(response.getLong("id"),
+////                            response.getBoolean("wasLogined")));
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//
+//                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Volley", error.toString());
+                callback.onResult(false);
+
+            }
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonArrayRequest);
+    }
+
     public interface BeekeeperServiceCallback {
         void onResult(boolean result);
+
+        void onResult(User user);
     }
 
 }

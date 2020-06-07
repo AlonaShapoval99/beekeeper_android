@@ -13,6 +13,10 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.bignerdranch.android.beerkeeper.modules.Login;
+import com.bignerdranch.android.beerkeeper.modules.User;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     static String email = "", password = "";
     String sessionId = "";
     boolean resultAnswer = false;
+    private static long userId;
+    private static LocalDateTime startTime;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +108,20 @@ public class LoginActivity extends AppCompatActivity {
         login.checkLogin(new Login.BeekeeperServiceCallback() {
             @Override
             public void onResult(boolean result) {
-                if (!result) {
+
+            }
+
+            @Override
+            public void onResult(User user) {
+                if (!user.isWasLogined()) {
                     Toast.makeText(LoginActivity.this, "Invalid input data", Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
-
+                userId = user.getId();
+                startTime = LocalDateTime.now();
             }
         });
 
@@ -123,6 +136,22 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    public void logout(Context mContext) {
+        long differenceInHours = Duration.between(startTime, LocalDateTime.now()).toHours();
+        Login login = new Login(mContext, userId, differenceInHours);
+        login.logout(new Login.BeekeeperServiceCallback() {
+            @Override
+            public void onResult(boolean result) {
+
+            }
+
+            @Override
+            public void onResult(User user) {
+
+            }
+        });
     }
 
     public boolean isPasswordCorrect() {

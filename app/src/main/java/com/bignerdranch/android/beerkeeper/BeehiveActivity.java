@@ -1,11 +1,14 @@
 package com.bignerdranch.android.beerkeeper;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import com.bignerdranch.android.beerkeeper.dao.OxygenDao;
 import com.bignerdranch.android.beerkeeper.dao.TemperatureDao;
 import com.bignerdranch.android.beerkeeper.modules.Beehive;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +46,12 @@ public class BeehiveActivity extends AppCompatActivity {
     Spinner mSpinnerChooseBeehive;
     @BindView(R.id.amount_of_frames)
     EditText mEditTextAmountOfFrames;
+    @BindView(R.id.showPredictions)
+    Button mButtonShow;
     ArrayList<String> beehives = new ArrayList<>();
     private String coordinates = null;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,14 +68,21 @@ public class BeehiveActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 coordinates = (String) parent.getItemAtPosition(position);
                 getBeehiveByCoordinates(coordinates);
-                getSwarming(coordinates);
-                getWeatherPrediction();
+//                getSwarming(coordinates);
+//                getWeatherPrediction();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+mButtonShow.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        getSwarming(coordinates);
+                getWeatherPrediction();
+    }
+});
     }
 
 
@@ -101,6 +115,19 @@ public class BeehiveActivity extends AppCompatActivity {
         BeehiveDao beehiveDao = new BeehiveDao(this, coordinates);
 
         beehiveDao.getBeehiveByCoordinates(new BeehiveDao.BeekeeperServiceCallback() {
+
+            @Override
+            public void onResult(Beehive result) {
+                String frames = result.getAmountOfFrames().toString();
+                mEditTextAmountOfFrames.setText(frames);
+                DecimalFormat dec = new DecimalFormat("#0.00");
+
+                mTextViewAmount.setText(dec.format(result.getAmount()));
+                mTextViewDataTemperature.setText(dec.format(result.getTemperature()));
+                mTextViewHumidity.setText(dec.format(result.getHumidity()));
+                mTextViewOxygen.setText(dec.format(result.getOxygen()));
+
+            }
             @Override
             public void onResult(List<String> answer) {
             }
@@ -110,14 +137,6 @@ public class BeehiveActivity extends AppCompatActivity {
 
             }
 
-            @Override
-            public void onResult(Beehive result) {
-                mEditTextAmountOfFrames.setText(result.getAmountOfFrames().toString());
-                mTextViewAmount.setText(result.getAmount().toString());
-                mTextViewDataTemperature.setText(result.getTemperature().toString());
-                mTextViewHumidity.setText(result.getHumidity().toString());
-                mTextViewOxygen.setText(result.getOxygen().toString());
-            }
         });
 
     }
@@ -140,7 +159,7 @@ public class BeehiveActivity extends AppCompatActivity {
 
             }
         });
-
+        getBeehiveByCoordinates( coordinates);
     }
 
     private void getWeatherPrediction() {
@@ -161,7 +180,7 @@ public class BeehiveActivity extends AppCompatActivity {
 
             }
         });
-
+        getBeehiveByCoordinates( coordinates);
     }
 
     @Override

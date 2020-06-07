@@ -111,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void LogOut() {
         Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+        LoginActivity loginActivity = new LoginActivity();
+        loginActivity.logout(this);
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         intent.putExtra("EXTRA_SESSION_ID", "0");
         startActivity(intent);

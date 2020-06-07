@@ -160,7 +160,7 @@
 
                 <TextView
                     android:id="@+id/swarming"
-                    android:layout_width="wrap_content"
+                    android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center_horizontal"
                     android:textColor="@color/black"
@@ -178,6 +178,16 @@
                     android:textColor="@color/black"
                     android:textSize="20sp" />
             </TableRow>
+            <TableRow>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showPredictions"
+                    android:text="Show Predictions"
+
+                    />
+            </TableRow>
         </TableLayout>
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
